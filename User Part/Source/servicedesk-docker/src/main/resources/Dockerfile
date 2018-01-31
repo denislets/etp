@@ -1,0 +1,1 @@
+FROM docker.net.billing.ru/common/ps-tomcat:008.08
