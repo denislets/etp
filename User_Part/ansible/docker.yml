@@ -1,0 +1,16 @@
+---
+- hosts: remote
+  sudo: yes
+ 
+  tasks:
+  - name: run rabbitmq
+    docker_container:
+      name: rabbitmq
+      image: docker.net.billing.ru/common/ps-rabbitmq
+      detach: true
+      ports:
+      - "4369:4369"
+      - "5671:5671"
+      - "5672:5672"
+      - "15672:15672"
+      - "25672:25672"
