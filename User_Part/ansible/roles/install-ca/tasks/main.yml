@@ -1,0 +1,25 @@
+---
+- name: install ca package
+  yum:
+    name: ca-certificates
+    state: present
+  
+- name: copy certificate authority to trusted ca path
+  copy:
+    src: files/ca/docker.net.billing.ru.crt
+    dest: /etc/pki/ca-trust/source/anchors/
+    owner: root
+    group: root
+    mode: 0644
+ 
+- name: enable update-ca-trust
+  command: /usr/bin/update-ca-trust enable
+  
+- name: extract certificates
+  command: /usr/bin/update-ca-trust extract
+
+- name: restart docker service
+  service:
+    name: docker
+    state: restarted
+    enabled: yes
