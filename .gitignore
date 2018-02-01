@@ -8,7 +8,7 @@ tomcat
 # Default excludes
 #
 
-# Binaries
+# Binarie
 *.7z
 *.dmg
 *.gz
@@ -46,6 +46,8 @@ nbdist/
 nbactions.xml
 nb-configuration.xml
 
+#ansible
+*.retry
 
 # OS
 .DS_Store

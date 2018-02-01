@@ -1,0 +1,22 @@
+---
+- assert:
+   that:
+      - servicedesk_check_is_done == True
+      - application_host_port is defined
+      - application_container_port is defined
+
+- name: Remove previous docker image by name 
+  shell: "docker rm -f {{ container_name }}" 
+  when: servicedesk_container_id is undefined
+  register: remove_cmd_result
+  failed_when: remove_cmd_result.rc != 0 and not(remove_cmd_result.stderr | search('No such container'))
+  changed_when: remove_cmd_result.rc == 0 or (remove_cmd_result.rc != 0 and not(remove_cmd_result.stderr | search('No such container')))
+  
+- debug: var=remove_cmd_result 
+    
+- name: Run servicedesk docker image 
+  shell: "docker run -d --name {{ container_name }} -p {{application_host_port}}:{{application_container_port}} {{ servicedesk_docker_repository }}:{{ application_version }}"
+  register: run_cmd_result
+  when: servicedesk_container_id is undefined
+
+- debug: var=run_cmd_result

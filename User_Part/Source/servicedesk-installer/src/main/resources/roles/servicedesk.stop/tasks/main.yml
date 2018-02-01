@@ -1,0 +1,13 @@
+---
+- assert:
+   that:
+      - servicedesk_check_is_done == True
+      
+- debug: var=servicedesk_container_id
+
+- name: Kill docker container 
+  shell: "docker kill {{ servicedesk_container_id }}" 
+  when: servicedesk_container_id is defined
+  register: kill_cmd_result
+  
+- debug: var=kill_cmd_result 

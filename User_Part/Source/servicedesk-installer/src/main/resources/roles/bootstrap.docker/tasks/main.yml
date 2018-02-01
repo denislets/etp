@@ -1,0 +1,51 @@
+---
+
+- debug: var=docker_need_to_restart
+
+- name: Install the latest version of docker
+  package:
+    name: docker
+    state: latest
+
+    
+- name: Create {{ docker_group }} group
+  group:
+    name: "{{ docker_group }}"
+    state: present
+
+
+- name: Get the CA certificate from docker.net.billing.ru
+  shell: "openssl s_client -connect {{ docker_repository_host }}:{{ docker_repository_port }} -showcerts </dev/null | openssl x509"
+  register: certificate_cmd_result
+  changed_when: false
+  
+- debug: var=certificate_cmd_result
+
+
+- name: Ensure the directory /etc/docker/certs.d/{{ docker_repository_host }}
+  file:
+    path: "/etc/docker/certs.d/{{ docker_repository_host }}"
+    state: directory 
+
+
+- name: Copy the CA cerificate to /etc/docker/certs.d/{{ docker_repository_host }}/ca.crt
+  copy:
+    dest: "/etc/docker/certs.d/{{ docker_repository_host }}/ca.crt"
+    content: "{{ certificate_cmd_result.stdout }}"
+  register: copy_ca_cmd_result
+  
+- debug: var=copy_ca_cmd_result
+
+
+- name: Start docker service if it's needed
+  service:
+    name: docker
+    state: started
+  register: docker_start_cmd_result
+
+
+- name: Restart the docker service if it's needed
+  service:
+    name: docker
+    state: restarted
+  when: not(docker_start_cmd_result.changed) and (docker_need_to_restart or copy_ca_cmd_result.changed)

@@ -1,0 +1,6 @@
+---
+
+- assert:
+   that:
+      - application_version != '' #Variable is defined in common vars
+      - container_name != '' # Variable set in in defaults

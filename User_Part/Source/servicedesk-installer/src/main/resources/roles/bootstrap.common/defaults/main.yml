@@ -1,0 +1,5 @@
+---
+
+docker_group: docker
+application_user: sdapp
+application_password: sdapp

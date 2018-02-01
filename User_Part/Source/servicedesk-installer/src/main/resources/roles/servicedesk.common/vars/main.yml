@@ -1,0 +1,3 @@
+---
+application_version: ${project.version}
+servicedesk_docker_repository: ${servicedesk.docker.repository}

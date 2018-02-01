@@ -1,0 +1,7 @@
+---
+
+- assert:
+   that:
+      - docker_group != '' #Variable is defined in common vars
+      - application_user != '' # Variable is set in in defaults
+      - application_password != '' # Variable is set in in defaults

@@ -1,0 +1,5 @@
+---
+
+docker_repository_host: docker.net.billing.ru
+docker_repository_port: 443
+docker_need_to_restart: false

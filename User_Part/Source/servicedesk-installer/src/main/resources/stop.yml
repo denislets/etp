@@ -1,0 +1,6 @@
+---
+- name: stop docker container with the servicedesk application
+  hosts: servicedesk
+  gather_facts: false
+  roles:
+    - { role: servicedesk.stop }

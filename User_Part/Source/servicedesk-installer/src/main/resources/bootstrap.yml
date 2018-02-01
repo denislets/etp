@@ -1,0 +1,8 @@
+---
+- name: bootstrap a virtual machine
+  hosts: servicedesk
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: bootstrap.user }
+    - { role: bootstrap.docker, docker_need_to_restart: "{{ docker_group_cmd_result.changed }}" }

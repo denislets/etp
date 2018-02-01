@@ -1,0 +1,20 @@
+---
+
+- assert:
+   that:
+      - application_version != '' # This variable is defined in common vars
+      - servicedesk_docker_repository != '' # This variable is defined in common vars
+      
+- name: Check if servicedesk app is running in docker 
+  shell: "docker ps --filter name={{ container_name }} -q"
+  register: servicedesk_check
+  changed_when: False
+  
+- set_fact:
+    servicedesk_container_id: "{{servicedesk_check.stdout_lines[0]}}"
+  when: servicedesk_check.stdout_lines | length != 0
+  
+- debug: var=servicedesk_container_id 
+
+- set_fact:
+        servicedesk_check_is_done: true

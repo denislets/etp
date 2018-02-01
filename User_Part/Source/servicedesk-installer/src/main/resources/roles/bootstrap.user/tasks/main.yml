@@ -1,0 +1,43 @@
+---
+
+- assert:
+    that:
+      - application_user is defined
+      - application_password != '' or application_password_hash != ''
+
+- debug: var=application_user
+- debug: var=application_password
+- debug: var=application_password_hash
+
+    
+- name: Calculate hash of password
+  set_fact:
+    application_password_hash: "{{ application_password | password_hash('sha512', application_password_salt | default(default_password_salt) ) }}"
+  when: application_password_hash is not defined
+    
+- debug: var=application_password_hash
+
+- name: Make docker group
+  group:
+    name: docker
+    state: present
+  register: docker_group_cmd_result
+  
+- debug: var=docker_group_cmd_result
+    
+- name: Make {{ application_user }} user
+  user:
+    name: "{{ application_user }}"
+    groups: docker
+    password: "{{ application_password_hash }}"
+    shell: /bin/bash
+    state: present
+  
+
+- name: Add authorized keys
+  authorized_key:
+    user: "{{ application_user }}"
+    state: present
+    key: "{{ item }}"
+  with_items: "{{ authorized_keys }}"
+  when: authorized_keys is defined

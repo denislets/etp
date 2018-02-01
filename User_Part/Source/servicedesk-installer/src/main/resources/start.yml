@@ -1,0 +1,6 @@
+---
+- name: start docker container with servicedesk application
+  hosts: servicedesk
+  gather_facts: false
+  roles:
+    - { role: servicedesk.start }
