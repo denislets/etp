@@ -4,7 +4,7 @@
 
 - name: Install the latest version of docker
   package:
-    name: docker
+    name: docker-ce
     state: latest
 
     

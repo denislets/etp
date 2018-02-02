@@ -45,9 +45,9 @@
 						<id>chmod-shell-script</id>
 						<phase>process-classes</phase>
 						<configuration>
-							<taerget>
-								<chmod file="target/classes/bin/*.sh" perm="777" />
-							</taerget>
+							<target>
+								<chmod file="target/classes/bin/*.sh" perm="755" />
+							</target>
 						</configuration>
 						<goals>
 							<goal>run</goal>
