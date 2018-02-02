@@ -2,17 +2,21 @@
 
 - debug: var=docker_need_to_restart
 
+- name: Add docker repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+  become: yes
+
 - name: Install the latest version of docker
   package:
     name: docker-ce
     state: latest
-
     
 - name: Create {{ docker_group }} group
   group:
     name: "{{ docker_group }}"
     state: present
-
 
 - name: Get the CA certificate from docker.net.billing.ru
   shell: "openssl s_client -connect {{ docker_repository_host }}:{{ docker_repository_port }} -showcerts </dev/null | openssl x509"
@@ -21,12 +25,10 @@
   
 - debug: var=certificate_cmd_result
 
-
 - name: Ensure the directory /etc/docker/certs.d/{{ docker_repository_host }}
   file:
     path: "/etc/docker/certs.d/{{ docker_repository_host }}"
     state: directory 
-
 
 - name: Copy the CA cerificate to /etc/docker/certs.d/{{ docker_repository_host }}/ca.crt
   copy:
@@ -36,13 +38,11 @@
   
 - debug: var=copy_ca_cmd_result
 
-
 - name: Start docker service if it's needed
   service:
     name: docker
     state: started
   register: docker_start_cmd_result
-
 
 - name: Restart the docker service if it's needed
   service:
