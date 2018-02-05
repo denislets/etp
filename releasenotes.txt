@@ -1,0 +1,13 @@
+Product: servicedesk
+
+Release Notes:
+--------------------------------------------------------------------
+Version:      1.0.0
+Release Date: 5.02.2018
++ Добавлен модуль servicedesk-service
++ Добавлен модуль servicedesk-installer
++ Добавлен модуль servicedesk-docker
+
+
+Dependencies: -
+Comment: -
