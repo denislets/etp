@@ -40,6 +40,7 @@
     	<module>servicedesk-service</module>
     	<module>servicedesk-docker</module>
     	<module>servicedesk-installer</module>
+    	<module>servicedesk-autotests</module>
     </modules>
     
 </project>
