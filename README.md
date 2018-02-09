@@ -4,7 +4,7 @@ Ansible
 
 bootstrap.yml установка докера и сертификата
 
-docker.yml запуск rabbitmq
+rabbitmq_run.yml запуск rabbitmq
 
 rabbitmq_remove.yml для задания в принципе не нужен, но для проверки понадобится. Удаляет установленный и запущенный rabbitmq
 
