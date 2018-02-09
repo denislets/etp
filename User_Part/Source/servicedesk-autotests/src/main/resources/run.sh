@@ -3,7 +3,7 @@
 
 print_help(){
     cat <<EOH
-Run integarion tests in container.
+Run integartion tests.
 usage: $0 <parameters>
 parameters:
   -t <target host where the servicedesk application is running>, optional, default is localhost

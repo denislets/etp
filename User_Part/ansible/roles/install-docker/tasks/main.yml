@@ -1,26 +1,47 @@
 ---
-- name: add docker repo
+- name: Add docker repo
   get_url:
     url: https://download.docker.com/linux/centos/docker-ce.repo
     dest: /etc/yum.repos.d/docer-ce.repo
   become: yes
 
-- name: install docker-ce
+- name: Install the latest version of docker
   package:
-    name: docker-ce
+    name: docker-ce, python-pip
     state: latest
 
-- name: install python-pip
-  package:
-    name: python-pip
-    state: latest
-
-- name: install docker-py
+- name: Install docker-py
   pip:
     name: docker-py
 
-- name: start docker service
+- name: Get the CA certificate from docker.net.billing.ru
+  shell: "openssl s_client -connect docker.net.billing.ru:443 -showcerts </dev/null | openssl x509"
+  register: certificate_cmd_result
+  changed_when: false
+  
+- debug: var=certificate_cmd_result
+
+- name: Ensure the directory /etc/docker/certs.d/docker.net.billing.ru
+  file:
+    path: "/etc/docker/certs.d/docker.net.billing.ru"
+    state: directory 
+
+- name: Copy the CA cerificate to /etc/docker/certs.d/docker.net.billing.ru/ca.crt
+  copy:
+    dest: "/etc/docker/certs.d/docker.net.billing.ru/ca.crt"
+    content: "{{ certificate_cmd_result.stdout }}"
+  register: copy_ca_cmd_result
+  
+- debug: var=copy_ca_cmd_result
+
+- name: Start docker service if it's needed
   service:
     name: docker
     state: started
-    enabled: yes
+  register: docker_start_cmd_result
+
+- name: Restart the docker service if it's needed
+  service:
+    name: docker
+    state: restarted
+  when: not(docker_start_cmd_result.changed) and (copy_ca_cmd_result.changed)

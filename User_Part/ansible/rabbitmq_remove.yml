@@ -1,9 +1,9 @@
 ---
 - hosts: remote
-  sudo: yes
+  become: yes
  
   tasks:
-  - name: remove rabbitmq
+  - name: Remove rabbitmq
     docker_container:
       name: rabbitmq
       state: absent

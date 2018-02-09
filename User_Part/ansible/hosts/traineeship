@@ -1,5 +1,5 @@
 [remote]
-192.168.56.10 ansible_user=root
+srv7-svaheim.net.billing.ru ansible_user=VP_Tech_WG1075
 
 [local]
 localhost ansible_connection=local
