@@ -1,5 +1,5 @@
 [remote]
-srv7-svaheim.net.billing.ru ansible_user=VP_Tech_WG1075
+srv7-ezykiel.net.billing.ru ansible_user=VP_Tech_WG1075
 
 [local]
 localhost ansible_connection=local
